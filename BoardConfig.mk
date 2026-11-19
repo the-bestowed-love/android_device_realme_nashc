@@ -42,7 +42,7 @@ BOARD_KERNEL_TAGS_OFFSET := 0x0bc08000
 BOARD_RAMDISK_OFFSET := 0x07c08000
 BOARD_DTB_OFFSET := 0x0bc08000
 
-BOARD_BOOTIMG_HEADER_VERSION := 2
+BOARD_BOOT_HEADER_VERSION := 2
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 BOARD_RAMDISK_USE_LZ4 := true
@@ -55,7 +55,7 @@ BOARD_KERNEL_CMDLINE += init_on_alloc=1
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
-BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --board ""
 
 # Display
@@ -129,6 +129,7 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)
 ENABLE_VENDOR_RIL_SERVICE := true
 
 # SELinux
+include device/lineage/sepolicy/libion/sepolicy.mk
 include device/mediatek/sepolicy_vndr/SEPolicy.mk
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
@@ -153,10 +154,12 @@ BOARD_AVB_BOOT_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_BOOT_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_BOOT_ROLLBACK_INDEX := 0
 BOARD_AVB_BOOT_ROLLBACK_INDEX_LOCATION := 3
+BOARD_AVB_BOOT_ADD_HASH_FOOTER_ARGS += --rollback_index 0 --rollback_index_location 3
 BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
+BOARD_AVB_RECOVERY_ADD_HASH_FOOTER_ARGS += --rollback_index 1 --rollback_index_location 1
 
 BOARD_AVB_VBMETA_SYSTEM := product system system_ext
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
@@ -177,9 +180,6 @@ BOARD_AVB_PRODUCT_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_ODM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 
-# Vibrator
-TARGET_VIBRATOR_SUPPORTS_EFFECTS := true
-
 # Wi-Fi
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
@@ -197,8 +197,7 @@ WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 # Inherit the proprietary files
 include vendor/realme/nashc/BoardConfigVendor.mk
 
-# Legacy proprietary blobs require AIDL ndk_platform libraries
-NEED_AIDL_NDK_PLATFORM_BACKEND := true
+BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
 
 # Optional OplusCamera standalone port
 ifneq ($(WITH_OPLUS_CAMERA),false)

@@ -13,6 +13,9 @@ $(call inherit-product, device/realme/nashc/device.mk)
 # Inherit some common LineageOS stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
+# Override the inherited ART default: this 4.19 kernel has no userfaultfd.
+PRODUCT_ENABLE_UFFD_GC := false
+
 PRODUCT_NAME := lineage_nashc
 PRODUCT_DEVICE := nashc
 PRODUCT_MANUFACTURER := realme

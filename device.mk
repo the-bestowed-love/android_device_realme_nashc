@@ -5,6 +5,9 @@
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/non_ab_device.mk)
 
+# Capture early kernel messages without relying on retained RAM or userdata.
+PRODUCT_PACKAGES_DEBUG += nashc_bootlog
+
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
@@ -45,13 +48,13 @@ TARGET_SCREEN_WIDTH := 1080
 
 # Cgroups
 PRODUCT_COPY_FILES += \
-    system/core/libprocessgroup/profiles/cgroups.json:$(TARGET_COPY_OUT_VENDOR)/etc/cgroups.json \
+    system/core/libprocessgroup/profiles/cgroups_30.json:$(TARGET_COPY_OUT_VENDOR)/etc/cgroups.json \
     system/core/libprocessgroup/profiles/task_profiles.json:$(TARGET_COPY_OUT_VENDOR)/etc/task_profiles.json
 
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.3-service \
-    android.hardware.memtrack-service.mediatek-mali
+    android.hardware.memtrack-service.mediatek
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -81,6 +84,9 @@ PRODUCT_PACKAGES += \
     android.hardware.health-service.mediatek-recovery
 
 # IMS
+$(call inherit-product, hardware/lineage/compat/frameworks/compat.mk)
+$(call inherit-product, hardware/mediatek/overlay/mssi.mk)
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/permissions/privapp-permissions-com.mediatek.ims.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-com.mediatek.ims.xml \
     $(LOCAL_PATH)/configs/permissions/mediatek-common.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/mediatek-common.xml \
@@ -94,6 +100,9 @@ $(call inherit-product, hardware/oplus/oplus-fwk/oplus-fwk.mk)
 PRODUCT_PACKAGES += \
     android.hardware.light-service.nashc
 
+# ION allocator used by the legacy MediaTek kernel.
+$(call soong_config_set_bool,libion,legacy_impl,true)
+
 # Lineage Health
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
@@ -106,7 +115,6 @@ PRODUCT_PACKAGES += \
     vendor.lineage.livedisplay-service.sysfs
 
 $(call soong_config_set_bool,livedisplay_sysfs,enable_af,false)
-$(call soong_config_set,livedisplay_sysfs,af_path,/sys/kernel/oplus_display/dimlayer_bl_en)
 $(call soong_config_set_bool,livedisplay_sysfs,enable_se,true)
 $(call soong_config_set,livedisplay_sysfs,se_path,/sys/kernel/oplus_display/hbm)
 
@@ -130,6 +138,14 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.nfc.hce.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_nfc/android.hardware.nfc.hce.xml \
     frameworks/native/data/etc/android.hardware.nfc.uicc.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_nfc/android.hardware.nfc.uicc.xml \
     frameworks/native/data/etc/android.hardware.nfc.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/sku_nfc/android.hardware.nfc.xml
+
+# Build shared MediaTek HIDL interfaces from the current platform sources.
+PRODUCT_PACKAGES += \
+    vendor.mediatek.hardware.bluetooth.audio@2.1 \
+    vendor.mediatek.hardware.bluetooth.audio@2.2 \
+    vendor.mediatek.hardware.mtkradioex@2.0 \
+    vendor.mediatek.hardware.mtkradioex@3.0 \
+    vendor.mediatek.hardware.netdagent@1.0
 
 # Overlays
 PRODUCT_ENFORCE_RRO_TARGETS := *
@@ -256,6 +272,8 @@ PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
     hardware/google/interfaces \
     hardware/google/pixel \
+    hardware/google/pixel/pixelstats \
+    hardware/google/pixel/power-libperfmgr \
     hardware/lineage/interfaces/power-libperfmgr \
     hardware/mediatek \
     hardware/mediatek/libmtkperf_client \
@@ -267,7 +285,8 @@ PRODUCT_PACKAGES += \
 
 # Thermal
 PRODUCT_PACKAGES += \
-    android.hardware.thermal-service.mediatek
+    android.hardware.thermal-service.mediatek \
+    pixelatoms-cpp
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/thermal_info_config.json:$(TARGET_COPY_OUT_VENDOR)/etc/thermal_info_config.json
@@ -277,11 +296,15 @@ PRODUCT_PACKAGES += \
     vendor.lineage.touch-service.oplus
 
 # USB
+$(call soong_config_set_bool,mediatek_gadget,use_custom_usb_gadget_rc,true)
+
 PRODUCT_PACKAGES += \
     android.hardware.usb-service.mediatek \
     android.hardware.usb.gadget-service.mediatek
 
 # Vibrator
+$(call soong_config_set_bool,mediatek_vibrator,supports_effects,true)
+
 PRODUCT_PACKAGES += \
     android.hardware.vibrator-service.mediatek
 
@@ -290,6 +313,8 @@ PRODUCT_PACKAGES += \
     vndservicemanager
 
 # Wi-Fi
+$(call soong_config_set_bool,mediatek_wifi_hal,use_pre_u_qpr2_struct,true)
+
 PRODUCT_PACKAGES += \
     libwifi-hal-wrapper:64 \
     wpa_supplicant \
@@ -304,7 +329,6 @@ $(call inherit-product, vendor/realme/nashc/nashc-vendor.mk)
 
 # Legacy 4.19 kernel
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
-PRODUCT_ENABLE_UFFD_GC := false
 
 # Android 13 MediaTek RIL compatibility
 PRODUCT_PACKAGES += \
