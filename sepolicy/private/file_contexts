@@ -1,2 +1,5 @@
 # Sensors
+/(system_ext|system/system_ext)/bin/nashc_bootlog u:object_r:nashc_bootlog_exec:s0
+/metadata/nashc-bootlog(/.*)? u:object_r:nashc_bootlog_metadata_file:s0
+
 /(system_ext|system/system_ext)/bin/hw/vendor\.lineage\.oplus_als.service u:object_r:hal_lineage_oplus_als_aidl_exec:s0

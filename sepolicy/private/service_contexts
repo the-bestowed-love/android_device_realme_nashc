@@ -1,2 +1,12 @@
 # Sensors
 vendor.lineage.oplus_als.IAreaCapture/default    u:object_r:hal_lineage_oplus_als_aidl_service:s0
+
+# Oplus RIL & IMS AIDL
+iims_ext                                                                u:object_r:radio_service:s0
+vendor.oplus.hardware.appradioaidl.IAppRadioStable/OplusAppRadio0    u:object_r:hal_radio_service:s0
+vendor.oplus.hardware.appradioaidl.IAppRadioStable/OplusAppRadio1    u:object_r:hal_radio_service:s0
+vendor.oplus.hardware.ims.IImsStable/OplusImsRadio0                  u:object_r:hal_radio_service:s0
+vendor.oplus.hardware.ims.IImsStable/OplusImsRadio1                  u:object_r:hal_radio_service:s0
+vendor.oplus.hardware.radio.IRadioStable/OplusRadio0                 u:object_r:hal_radio_service:s0
+vendor.oplus.hardware.radio.IRadioStable/OplusRadio1                 u:object_r:hal_radio_service:s0
+

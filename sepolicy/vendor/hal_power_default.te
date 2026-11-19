@@ -1,4 +1,8 @@
-allow hal_power_default vendor_sysfs_gpu:dir search;
-allow hal_power_default vendor_sysfs_gpu:file rw_file_perms;
+# GPU access is provided by the common MediaTek policy using sysfs_gpu.
 allow hal_power_default vendor_proc_display:dir search;
 allow hal_power_default vendor_proc_display:file rw_file_perms;
+
+# CPUFreq access
+allow hal_power_default proc_cpufreq:dir r_dir_perms;
+allow hal_power_default proc_cpufreq:file rw_file_perms;
+

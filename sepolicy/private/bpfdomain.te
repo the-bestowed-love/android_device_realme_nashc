@@ -1,0 +1,2 @@
+# Permit BPF loaders and clients to select the backported networking ABI.
+get_prop(bpfdomain, nashc_bpf_compat_prop)

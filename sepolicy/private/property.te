@@ -1,0 +1,2 @@
+# Networking ABI selector read by the platform BPF libraries.
+system_restricted_prop(nashc_bpf_compat_prop)
