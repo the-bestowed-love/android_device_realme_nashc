@@ -29,9 +29,16 @@ namespace_imports = [
 def lib_fixup_vendor_suffix(lib: str, partition: str, *args, **kwargs):
     return f'{lib}_{partition}' if partition == 'vendor' else None
 
+def lib_fixup_odm_suffix(lib: str, partition: str, *args, **kwargs):
+    return f'{lib}_odm' if partition in ('vendor', 'odm') else None
+
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
-    ('vendor.mediatek.hardware.videotelephony@1.0',): lib_fixup_vendor_suffix,
+    (
+        'libformatter',
+        'vendor.mediatek.hardware.videotelephony@1.0',
+    ): lib_fixup_vendor_suffix,
+    ('vendor.oplus.hardware.commondcs@1.0',): lib_fixup_odm_suffix,
 }
 
 blob_fixups: blob_fixups_user_type = {
@@ -67,7 +74,10 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('libutils.so', 'libutils-v32.so'),
     'vendor/lib64/libmtkcam_featurepolicy.so': blob_fixup()
         .binary_regex_replace(b'\x34\xE8\x87\x40\xB9', b'\x34\x28\x02\x80\x52'),
-    ('vendor/bin/mnld', 'vendor/lib64/libaalservice.so', 'vendor/lib64/libcam.utils.sensorprovider.so', 'vendor/lib64/liboplus_mtkcam_lightsensorprovider.so'): blob_fixup()
+    'vendor/bin/mnld': blob_fixup()
+        .replace_needed('libsensorndkbridge.so', 'android.hardware.sensors@1.0-convert-shared.so')
+        .replace_needed('libmnl.so', 'libmnl_mtk.so'),
+    ('vendor/lib64/libaalservice.so', 'vendor/lib64/libcam.utils.sensorprovider.so', 'vendor/lib64/liboplus_mtkcam_lightsensorprovider.so'): blob_fixup()
         .replace_needed('libsensorndkbridge.so', 'android.hardware.sensors@1.0-convert-shared.so'),
     'vendor/lib64/hw/audio.primary.mt6785.so': blob_fixup()
         .replace_needed('libalsautils.so', 'libalsautils-v31.so'),
@@ -76,7 +86,7 @@ blob_fixups: blob_fixups_user_type = {
             'vendor.oplus.hardware.performance-V1-ndk_platform.so',
             'vendor.oplus.hardware.performance-V1-ndk.so',
         ),
-    'vendor/lib64/libmnl.so': blob_fixup()
+    'vendor/lib64/libmnl_mtk.so': blob_fixup()
         .add_needed('libcutils.so'),
     ('vendor/lib64/lib3a.flash.so', 'vendor/lib64/lib3a.ae.stat.so', 'vendor/lib64/lib3a.sensors.color.so', 'vendor/lib64/lib3a.sensors.flicker.so', 'vendor/lib64/libaaa_ltm.so'): blob_fixup()
         .add_needed('liblog.so'),

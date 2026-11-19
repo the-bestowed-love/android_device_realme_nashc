@@ -50,8 +50,6 @@ vendor/lib64/libspeechparser_vendor.so
 vendor/lib/libmtkspparser.so
 vendor/lib64/libmtkspparser.so
 vendor/lib/vendor.mediatek.hardware.audio@7.1.so
-vendor/lib/vendor.mediatek.hardware.bluetooth.audio@2.1.so
-vendor/lib/vendor.mediatek.hardware.bluetooth.audio@2.2.so
 
 # Audio Params
 odm/etc/audio/audio_device/audio_device.xml
@@ -908,7 +906,7 @@ odm/lib64/libgf_hal_G5.so
 odm/lib64/libgf_hal_G6.so
 odm/lib64/libgf_hal_G7.so
 odm/lib64/libosensehalclient.so
-odm/lib64/vendor.oplus.hardware.commondcs@1.0.so
+odm/lib64/vendor.oplus.hardware.commondcs@1.0.so;MODULE_SUFFIX=_odm
 odm/lib64/vendor.oplus.hardware.osense.client@1.0.so
 
 # Display
@@ -1037,7 +1035,7 @@ vendor/lib64/hw/android.hardware.gnss-impl-mediatek.so
 vendor/lib64/hw/android.hardware.gnss@2.1-impl-mediatek.so
 vendor/lib64/hw/gps.default.so
 vendor/lib64/libDR.so
-vendor/lib64/libmnl.so
+vendor/lib64/libmnl.so:vendor/lib64/libmnl_mtk.so;FIX_SONAME
 
 # IMS - From Vitamin
 system_ext/bin/vtservice|fb9c50e2341fd82c3ebd789fb1b803a9fef3c660
@@ -1122,7 +1120,7 @@ vendor/lib64/libcodec2_soft_mtk_msadpcmdec.so
 vendor/lib64/libcodec2_soft_mtk_wmadec.so
 vendor/lib64/libcodec2_vpp_qt_plugin.so
 vendor/lib64/libcodec2_vpp_rs_plugin.so
-vendor/lib64/libformatter.so
+vendor/lib64/libformatter.so;MODULE_SUFFIX=_vendor
 
 # Neural Networks
 vendor/bin/hw/android.hardware.neuralnetworks@1.3-service-mtk-neuron
@@ -1231,8 +1229,6 @@ vendor/lib64/libstorage_otp.so
 vendor/lib64/libsysenv.so
 vendor/lib64/libtrm.so
 vendor/lib64/libwpfa.so
-vendor/lib64/vendor.mediatek.hardware.mtkradioex@2.0.so
-vendor/lib64/vendor.mediatek.hardware.mtkradioex@3.0.so
 vendor/lib64/vendor.oplus.hardware.radio-V1-ndk_platform.so
 
 # Radio (IMS)
@@ -1354,7 +1350,6 @@ vendor/etc/init/netdagent.rc
 vendor/etc/init/tetheroffloadservice.rc
 vendor/lib64/libforkexecwrap.so
 vendor/lib64/libifcutils_mtk.so
-vendor/lib64/vendor.mediatek.hardware.netdagent@1.0.so
 
 # Thermal
 vendor/bin/thermal
