@@ -1,0 +1,15 @@
+# /metadata is mounted by first-stage init, before userdata and BPF loading.
+on early-init && property:ro.debuggable=1
+    mkdir /metadata/nashc-bootlog 0700 root root
+    restorecon_recursive /metadata/nashc-bootlog
+    start nashc_bootlog
+
+service nashc_bootlog /system_ext/bin/nashc_bootlog
+    disabled
+    oneshot
+    user root
+    group root
+    capabilities SYSLOG
+
+on property:sys.boot_completed=1
+    stop nashc_bootlog
