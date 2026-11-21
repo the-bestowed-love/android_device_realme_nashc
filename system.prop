@@ -14,3 +14,4 @@ persist.sysui.disableBlur=true
 
 # Zygote
 zygote.critical_window.minute=10
+ro.zygote.disable_app_zygote=true

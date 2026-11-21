@@ -29,3 +29,6 @@ ro.oplus.image.       u:object_r:system_oplus_project_prop:s0
 
 # BPF compatibility
 ro.bpf.kver_override u:object_r:nashc_bpf_compat_prop:s0 exact string
+
+# Zygote
+ro.zygote.disable_app_zygote u:object_r:zygote_config_prop:s0 exact bool
