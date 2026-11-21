@@ -169,6 +169,17 @@ PRODUCT_PACKAGES += \
     TetheringResOverlayNashc \
     WifiResOverlayNashc
 
+# Face Unlock (Sense)
+PRODUCT_PACKAGES += \
+    FaceUnlock \
+    FaceUnlockOverlay
+
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    ro.face.sense_service=true
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.biometrics.face.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/android.hardware.biometrics.face.xml
+
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
