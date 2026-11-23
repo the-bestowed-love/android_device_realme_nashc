@@ -64,7 +64,4 @@ genfscon sysfs /devices/platform/charger/power_supply/battery/wakeup u:object_r:
 genfscon sysfs /devices/platform/charger/power_supply/usb/wakeup u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/odm/odm:oplus,track-charge/track/wakeup u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/usb0/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/virtual/wakeup/wakeup  u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/virtual/wakeup         u:object_r:sysfs_wakeup:s0
-genfscon sysfs /class/wakeup                  u:object_r:sysfs_wakeup:s0
 
